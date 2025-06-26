@@ -1,49 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>AR Video Demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-  <style>
-    html, body {
-      margin: 0;
-      background: #000;
-      height: 100%;
-      overflow: hidden;
-    }
-    model-viewer {
-      width: 100%;
-      height: 100vh;
-    }
-    video {
-      position: absolute;
-      top: 10%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80%;
-      border: 4px solid white;
-      border-radius: 10px;
-      z-index: 2;
-    }
-  </style>
-</head> 
-<body>
+  <title>Launching AR...</title>
+  <script>
+    window.onload = function() {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-  <!-- Transparent placeholder model to enable AR -->
-  <model-viewer
-    ar
-    ar-modes="webxr scene-viewer quick-look"
-    environment-image="neutral"
-    src="https://modelviewer.dev/shared-assets/models/ShadowPlane.glb"
-    ios-src="https://modelviewer.dev/shared-assets/models/ShadowPlane.usdz"
-    camera-controls>
-  </model-viewer>
-
-  <!-- Floating video screen (MP4 or YouTube iframe) -->
-  <video autoplay muted loop playsinline>
-    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-
+      if (/android/i.test(userAgent)) {
+        // Android → Google Scene Viewer
+        window.location.href =
+          "intent://arvr.google.com/scene-viewer/1.0?file=https://modelviewer.dev/shared-assets/models/Astronaut.glb&mode=ar_only&title=Astronaut#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;";
+      } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        // iOS → AR Quick Look
+        window.location.href =
+          "https://modelviewer.dev/shared-assets/models/Astronaut.usdz";
+      } else {
+        // Fallback for desktop or unknown
+        document.body.innerHTML = "<h2 style='text-align:center;padding-top:30vh;font-family:sans-serif'>AR is only supported on iOS and Android devices.</h2>";
+      }
+    };
+  </script>
+</head>
+<body style="margin:0;background:#000;color:#fff;">
 </body>
 </html>
