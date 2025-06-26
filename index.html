@@ -2,21 +2,26 @@
 <html lang="en">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Instant AR Launch</title>
+  <title>Launching AR...</title>
+  <script>
+    window.onload = function() {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+      if (/android/i.test(userAgent)) {
+        // Android → Google Scene Viewer
+        window.location.href =
+          "intent://arvr.google.com/scene-viewer/1.0?file=https://modelviewer.dev/shared-assets/models/Astronaut.glb&mode=ar_only&title=Astronaut#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;";
+      } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        // iOS → AR Quick Look
+        window.location.href =
+          "https://modelviewer.dev/shared-assets/models/Astronaut.usdz";
+      } else {
+        // Fallback for desktop or unknown
+        document.body.innerHTML = "<h2 style='text-align:center;padding-top:30vh;font-family:sans-serif'>AR is only supported on iOS and Android devices.</h2>";
+      }
+    };
+  </script>
 </head>
-<body style="margin:0;display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;font-family:sans-serif">
-
-  <h2>Tap to View in AR</h2>
-
-  <!-- Android -->
-  <a href="intent://arvr.google.com/scene-viewer/1.0?file=https://modelviewer.dev/shared-assets/models/Astronaut.glb&mode=ar_only&title=Astronaut#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;">
-    <button style="font-size:18px;padding:12px 24px;margin:10px">View in AR (Android)</button>
-  </a>
-
-  <!-- iOS -->
-  <a rel="ar" href="https://modelviewer.dev/shared-assets/models/Astronaut.usdz">
-    <button style="font-size:18px;padding:12px 24px;margin:10px">View in AR (iOS)</button>
-  </a>
-
+<body style="margin:0;background:#000;color:#fff;">
 </body>
 </html>
