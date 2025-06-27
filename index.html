@@ -3,25 +3,47 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Launching AR...</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      flex-direction: column;
+      text-align: center;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin: 0;
+    }
+  </style>
   <script>
-    window.onload = function() {
+    window.onload = function () {
+      document.getElementById("status").textContent = "Launching AR...";
+
       const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-      if (/android/i.test(userAgent)) {
-        // Android → Google Scene Viewer
-        window.location.href =
-          "intent://arvr.google.com/scene-viewer/1.0?file=https://modelviewer.dev/shared-assets/models/Astronaut.glb&mode=ar_only&title=Astronaut#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;";
-      } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        // iOS → AR Quick Look
-        window.location.href =
-          "https://modelviewer.dev/shared-assets/models/Astronaut.usdz";
-      } else {
-        // Fallback for desktop or unknown
-        document.body.innerHTML = "<h2 style='text-align:center;padding-top:30vh;font-family:sans-serif'>AR is only supported on iOS and Android devices.</h2>";
-      }
+      setTimeout(() => {
+        if (/android/i.test(userAgent)) {
+          // Android → Google Scene Viewer
+          window.location.href =
+            "intent://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/8thwall/web/master/video-texture/video-texture.glb&mode=ar_only&title=AR%20Video#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;";
+        } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+          // iOS fallback (Quick Look can't play video textures directly)
+          alert("This AR video demo works best on Android. iOS does not support video textures in AR.");
+        } else {
+          document.getElementById("status").textContent = "AR is only supported on mobile (iOS or Android).";
+        }
+      }, 2000); // Delay for message display
     };
   </script>
 </head>
-<body style="margin:0;background:#000;color:#fff;">
+<body>
+  <h1>Hello, Demo for Sarvesh</h1>
+  <p id="status">Preparing AR experience...</p>
 </body>
 </html>
